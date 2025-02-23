@@ -1,75 +1,66 @@
 import Link from "next/link";
-
 import { ModeToggle } from "@/components/nav/theme-toggle";
-import AuthComponent from "./auth-button";
+
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
-  SheetTitle,
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import { HamburgerMenuIcon, BoxIcon } from "@radix-ui/react-icons";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 
 function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background">
-      <div className="sm:px-12 px-6 flex items-center h-16 space-x-4 sm:justify-between sm:space-x-0">
+    <header className="sticky  top-0 z-50 w-full border-b bg-background">
+      <div className="flex h-16 items-center px-6  sm:justify-between gap-5">
+        {/* Mobile Menu */}
         <Sheet>
           <SheetTrigger className="p-2 sm:hidden">
-            <HamburgerMenuIcon className="w-8 h-8 sm:hidden" />
+            <HamburgerMenuIcon />
           </SheetTrigger>
-          <SheetContent side="left">
-            <SheetHeader className="pt-8"></SheetHeader>
-
-            <div className="pt-8 pl-2 text-lg">
-              <div className="space-y-8 ">
-                <div>
-                  <Link href="/">
-                    <SheetClose>Home</SheetClose>
-                  </Link>
-                </div>
-                <div>
-                  <Link href="/about">
-                    <SheetClose>About</SheetClose>
-                  </Link>
-                </div>
-                <div>
-                  <Link href="/blog">
-                    <SheetClose>Blog</SheetClose>
-                  </Link>
-                </div>
-                <div>
-                  <Link href="/contact">
-                    <SheetClose>Contact</SheetClose>
-                  </Link>
-                </div>
-              </div>
-            </div>
+          <SheetContent side="left" className="w-64">
+            <SheetHeader className="pt-4">
+              <div className="text-xl font-bold">Navigation</div>
+            </SheetHeader>
+            <nav className="mt-6 flex flex-col space-y-6 text-lg pl-2">
+              <Link href="/" className="hover:text-muted-foreground">
+                <SheetClose>Home</SheetClose>
+              </Link>
+              <Link href="/about" className="hover:text-muted-foreground">
+                <SheetClose>About</SheetClose>
+              </Link>
+              <Link href="/blog" className="hover:text-muted-foreground">
+                <SheetClose>Blog</SheetClose>
+              </Link>
+              <Link href="/contact" className="hover:text-muted-foreground">
+                <SheetClose>Contact</SheetClose>
+              </Link>
+            </nav>
           </SheetContent>
         </Sheet>
 
-        <Link href="/">
-          <div className="text-2xl font-bold">Amir&apos;s Blog</div>
+        {/* Site Logo */}
+        <Link href="/" className="text-2xl font-bold">
+          Amir&apos;s Blog
         </Link>
-        <nav className="pl-6 gap-6 pt-4 hidden sm:flex text-sm">
-          <a className="hover:text-muted-foreground" href="/about">
+
+        {/* Desktop Navigation */}
+        <nav className="hidden sm:flex gap-6 text-sm">
+          <Link href="/about" className="hover:text-muted-foreground">
             About
-          </a>
-          <a className="hover:text-muted-foreground" href="/blog">
+          </Link>
+          <Link href="/blog" className="hover:text-muted-foreground">
             Blog
-          </a>
-          <a className="hover:text-muted-foreground" href="/contact">
+          </Link>
+          <Link href="/contact" className="hover:text-muted-foreground">
             Contact
-          </a>
+          </Link>
         </nav>
-        <div className="flex items-center justify-end flex-1 space-x-4 z-20">
-          <div className="flex gap-2 items-center">
-            <ModeToggle />
-            <AuthComponent />
-          </div>
+
+        {/* Right Section */}
+        <div className="flex flex-1 justify-end items-center gap-2">
+          <ModeToggle />
         </div>
       </div>
     </header>

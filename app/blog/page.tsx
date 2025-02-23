@@ -8,6 +8,8 @@ import Search from "@/components/blog/Search";
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Amir's Blog",
+    description:
+      "A blog about web development and cloud computing, with a focus on JavaScript and AWS. Expect hands-on tutorials, best practices, and insights to help you build and scale modern applications.",
   };
 }
 
@@ -51,7 +53,7 @@ export default async function Home() {
   const posts = await getAllPosts();
 
   return (
-    <div className="flex flex-col gap-8 max-w-3xl z-10 w-full items-center justify-between">
+    <div className="flex flex-col gap-8 max-w-3xl z-0 w-full items-center justify-between">
       <div>
         <h2 className="text-5xl sm:text-6xl font-black">Blog</h2>
       </div>
