@@ -82,3 +82,14 @@
   white-space: pre-wrap;
   word-break: break-word;
 }
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

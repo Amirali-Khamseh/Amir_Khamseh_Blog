@@ -22,12 +22,7 @@ function SiteHeader() {
             <HamburgerMenuIcon className="w-8 h-8 sm:hidden" />
           </SheetTrigger>
           <SheetContent side="left">
-            <SheetHeader className="pt-8">
-              {/* <SheetTitle>
-                <span className="text-4xl">Menu</span>
-              </SheetTitle> */}
-              {/* <SheetDescription>Find your way around.</SheetDescription> */}
-            </SheetHeader>
+            <SheetHeader className="pt-8"></SheetHeader>
 
             <div className="pt-8 pl-2 text-lg">
               <div className="space-y-8 ">
@@ -57,7 +52,7 @@ function SiteHeader() {
         </Sheet>
 
         <Link href="/">
-          <div className="text-4xl font-bold">NT</div>
+          <div className="text-2xl font-bold">Amir&apos;s Blog</div>
         </Link>
         <nav className="pl-6 gap-6 pt-4 hidden sm:flex text-sm">
           <a className="hover:text-muted-foreground" href="/about">

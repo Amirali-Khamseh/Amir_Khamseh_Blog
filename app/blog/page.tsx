@@ -2,22 +2,13 @@ import fs from "node:fs";
 import path from "node:path";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { Post } from "@/types";
+import Search from "@/components/blog/Search";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Next.js Template | Blog",
+    title: "Amir's Blog",
   };
-}
-
-type Post = {
-  slug: string;
-  metadata: PostMetadata;
-};
-
-interface PostMetadata {
-  title: string;
-  publishDate: string;
-  [key: string]: any;
 }
 
 async function getAllPosts(): Promise<Post[]> {
@@ -47,7 +38,6 @@ async function getAllPosts(): Promise<Post[]> {
       }
     });
 
-  // Sort posts by publishDate in descending order
   posts.sort(
     (a, b) =>
       new Date(b.metadata.publishDate).getTime() -
@@ -65,11 +55,8 @@ export default async function Home() {
       <div>
         <h2 className="text-5xl sm:text-6xl font-black">Blog</h2>
       </div>
-      <div className="text-lg">
-        <p>
-          Welcome to the blog! Here you will find a collection of articles and
-          posts.
-        </p>
+      <div className="text-lg w-full">
+        <Search posts={posts} />
       </div>
 
       <div className="w-full">
