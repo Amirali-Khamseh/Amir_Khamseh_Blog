@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -10,6 +11,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function Home() {
   return (
-    <div className="max-w-3xl z-10 w-full items-center justify-between"></div>
+    <div className="max-w-3xl z-10 w-full items-center justify-between">
+      {redirect("/blog")}{" "}
+    </div>
   );
 }

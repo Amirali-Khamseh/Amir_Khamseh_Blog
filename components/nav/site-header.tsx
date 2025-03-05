@@ -9,6 +9,7 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { Links } from "./links";
 
 function SiteHeader() {
   return (
@@ -24,16 +25,16 @@ function SiteHeader() {
               <div className="text-xl font-bold">Navigation</div>
             </SheetHeader>
             <nav className="mt-6 flex flex-col space-y-6 text-lg pl-2">
-              <Link href="/" className="hover:text-muted-foreground">
+              <Link href={Links.main} className="hover:text-muted-foreground">
                 <SheetClose>Home</SheetClose>
-              </Link>
-              <Link href="/about" className="hover:text-muted-foreground">
-                <SheetClose>About</SheetClose>
               </Link>
               <Link href="/blog" className="hover:text-muted-foreground">
                 <SheetClose>Blog</SheetClose>
               </Link>
-              <Link href="/contact" className="hover:text-muted-foreground">
+              <Link
+                href={Links.contacts}
+                className="hover:text-muted-foreground"
+              >
                 <SheetClose>Contact</SheetClose>
               </Link>
             </nav>
@@ -41,19 +42,16 @@ function SiteHeader() {
         </Sheet>
 
         {/* Site Logo */}
-        <Link href="/" className="text-2xl font-bold">
+        <Link href={Links.main} className="text-2xl font-bold">
           Amir&apos;s Blog
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden sm:flex gap-6 text-sm">
-          <Link href="/about" className="hover:text-muted-foreground">
-            About
-          </Link>
           <Link href="/blog" className="hover:text-muted-foreground">
             Blog
           </Link>
-          <Link href="/contact" className="hover:text-muted-foreground">
+          <Link href={Links.contacts} className="hover:text-muted-foreground">
             Contact
           </Link>
         </nav>
