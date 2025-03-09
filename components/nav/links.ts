@@ -1,4 +1,4 @@
 export const Links = {
-  main: "https://amir-khamseh.vercel.app/",
-  contacts: "https://amir-khamseh.vercel.app/#contact",
+  main: "https://amir-khamseh.com",
+  contacts: "https://amir-khamseh.com/#contact",
 };
