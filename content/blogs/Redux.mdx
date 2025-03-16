@@ -1,0 +1,252 @@
+export const metadata = {
+  title: "Redux Basics",
+  publishDate: "2025-03-16",
+  description: "Deep dive into Redux world",
+  category: "React",
+};
+
+## Introduction
+
+In this first blog, I will go through one of the topics that I struggled with a lot: **Redux Basics**.
+
+## Why You Should Read This?
+
+This will be a shortened version of the <a href="https://redux.js.org/tutorials/essentials/part-1-overview-concepts#redux-toolkit"  >docs</a>, so you don't need to go through the whole documentation—I did that for you here. It will also include some personal notes that helped me understand Redux, and hopefully, they will help you too.
+
+## What is Redux?
+
+Redux is a pattern and library for managing and updating global application state. The UI triggers events called **actions** to describe what happened, and separate update logic called **reducers** updates the state in response.
+
+Redux serves as a **centralized store** for state that needs to be used across your entire application, with rules ensuring that the state can only be updated in a **predictable** fashion.
+
+## Redux Libraries and Tools
+
+### **Redux Toolkit**
+
+Redux Toolkit is the recommended approach for writing Redux logic. It contains packages and functions that are essential for building a Redux app. Redux Toolkit:
+
+- Builds in suggested best practices.
+- Simplifies most Redux tasks.
+- Prevents common mistakes.
+- Makes it easier to write Redux applications.
+
+### **React-Redux**
+
+Redux can integrate with any UI framework, but it is most frequently used with **React**. The official package for this is **React-Redux**, which allows React components to interact with a Redux store by:
+
+- Reading pieces of state.
+- Dispatching actions to update the store.
+
+### **Redux DevTools Extension**
+
+The **Redux DevTools Extension** shows a **history** of changes to the state in your Redux store over time, allowing you to debug your applications effectively.
+
+## Immutability vs. Mutability
+
+JavaScript supports two types of variable declarations: **Primitive** and **Non-Primitive**.
+
+### **Primitive Data Types (Stored by Value)**
+
+- Stored directly in **stack memory**.
+- When assigned to a new variable, a **copy** of the value is made.
+- **Immutable** (cannot be changed after creation).
+
+#### **JavaScript Data**
+
+```
++---------------------------+
+|     JavaScript Data      |
++---------------------------+
+|  Primitive Data Types    | <---- Immutable & stored by value
+|  (Stored directly in stack)  |
+|---------------------------|
+|  Number                  |
+|  String                   |
+|  Boolean                 |
+|  Null                    |
+|  Undefined               |
+|  Symbol                  |
+|  BigInt                  |
++---------------------------+
+```
+
+#### **Example:**
+
+```js
+let a = 10;
+let b = a; // A copy of `a` is assigned to `b`
+b = 20;
+
+console.log(a); // 10 (unchanged)
+console.log(b); // 20 (separate copy)
+```
+
+### **Non-Primitive Data Types (Stored by Reference)**
+
+- Stored in **heap memory**, but the variable holds a **reference (address)** in the stack.
+- When assigned to a new variable, the **reference** is copied, not the actual value.
+- **Mutable** (modifying one reference modifies all references).
+
+#### **JavaScript Data**
+
+```
++---------------------------+
+|  Non-Primitive Data Types | <---- Mutable & stored by reference
+|  (Stored in heap, ref in stack) |
+|---------------------------|
+|  Object                  |
+|  Array                    |
+|  Function                 |
+|  Date                     |
+|  RegExp                   |
++---------------------------+
+```
+
+#### **Example:**
+
+```js
+let obj1 = { name: "Amir" };
+let obj2 = obj1; // Both point to the same object in memory
+
+obj2.name = "Ali";
+
+console.log(obj1.name); // "Ali" (changed because obj1 and obj2 reference the same object)
+console.log(obj2.name); // "Ali"
+```
+
+## Immutability
+
+JavaScript objects and arrays are **mutable** by default. If you create an object or array, you can modify its contents:
+
+```js
+const obj = { a: 1, b: 2 };
+// still the same object outside, but the contents have changed
+obj.b = 3;
+
+const arr = ["a", "b"];
+// In the same way, we can change the contents of this array
+arr.push("c");
+arr[1] = "d";
+```
+
+This is called **mutating** the object or array. The reference remains the same, but the contents inside the object change.
+
+To update values **immutably**, you must make **copies** of existing objects/arrays and modify the copies:
+
+```js
+let arr1 = ["a", "b"];
+let arr2 = ["c", "d"];
+let arr3 = [...arr1, ...arr2];
+console.log(arr3); // ['a', 'b', 'c', 'd']
+```
+
+React and Redux **require** immutable updates. We'll explore this more later.
+
+## Important Terminology
+
+### **Action**
+
+An **action** is a plain JavaScript object with a **type** field, describing an event in the app.
+
+```js
+const addTodoAction = {
+  type: "todos/todoAdded",
+  payload: "Buy milk",
+};
+```
+
+### **Action Creators**
+
+An **action creator** is a function that returns an action object:
+
+```js
+const addTodo = (text) => ({
+  type: "todos/todoAdded",
+  payload: text,
+});
+```
+
+### **Reducers**
+
+A **reducer** is a function that updates the state based on an action:
+
+```js
+const initialState = { value: 0 };
+
+function counterReducer(state = initialState, action) {
+  if (action.type === "counter/increment") {
+    return { ...state, value: state.value + 1 };
+  }
+  return state;
+}
+```
+
+### **Store**
+
+The **store** holds the Redux state:
+
+```js
+import { configureStore } from "@reduxjs/toolkit";
+const store = configureStore({ reducer: counterReducer });
+console.log(store.getState()); // { value: 0 }
+```
+
+### **Dispatch**
+
+To update state, **dispatch** an action:
+
+```js
+store.dispatch({ type: "counter/increment" });
+console.log(store.getState()); // { value: 1 }
+```
+
+### **Selectors**
+
+Selectors extract specific values from the store:
+
+```js
+const selectCounterValue = (state) => state.value;
+const currentValue = selectCounterValue(store.getState());
+console.log(currentValue); // 2
+```
+
+```
++---------------------------------+
+| REDUX FLOW OVERVIEW              |
++----------------------------------+
+
+1. INITIAL SETUP
+   +----------------------------+
+   | Redux store is created    |
+   | with a root reducer       |
+   +----------------------------+
+   | Store calls reducer once  |
+   | and sets initial state    |
+   +----------------------------+
+   | UI renders based on state |
+   | and subscribes to updates |
+   +----------------------------+
+
+2. UPDATES (STATE CHANGES)
+   +----------------------------+
+   | User interacts with UI    |
+   | (e.g., clicks a button)   |
+   +----------------------------+
+   | Action is dispatched      |
+   | (e.g., { type: 'INCREMENT' }) |
+   +----------------------------+
+   | Store runs reducer with   |
+   | previous state & action   |
+   +----------------------------+
+   | New state is saved        |
+   +----------------------------+
+   | UI components subscribed  |
+   | to store are notified     |
+   +----------------------------+
+   | Components check if data  |
+   | they depend on changed    |
+   +----------------------------+
+   | Components re-render      |
+   | with new state data       |
+   +----------------------------+
+```
