@@ -61,23 +61,25 @@ export default async function Page({ params }: { params: { slug: string } }) {
   );
 
   return (
-    <div className="max-w-3xl z-10 w-full items-center justify-between">
+    <div className="w-full max-w-3xl">
       <div className="w-full flex justify-center items-center flex-col gap-6">
-        <article className="prose prose-lg md:prose-lg lg:prose-lg mx-auto min-w-full">
+        <article className="prose prose-lg dark:prose-invert w-full max-w-none">
           <div className="pb-8">
             <p className="font-semibold text-lg">
-              <span className="text-red-600 pr-1">
+              <span className="text-gray-500 pr-1">
                 {post.metadata.publishDate}
               </span>{" "}
               {post.metadata.category}
             </p>
           </div>
           <div className="pb-10">
-            <h1 className="text-5xl sm:text-6xl font-black capitalize leading-12">
+            <h1 className="text-4xl sm:text-5xl font-black capitalize leading-tight">
               {post.metadata.title}
             </h1>
           </div>
-          <MDXContent />
+          <div className="w-full [&>*]:break-words [&>pre]:overflow-x-auto [&>pre]:whitespace-pre-wrap">
+            <MDXContent />
+          </div>
         </article>
       </div>
     </div>

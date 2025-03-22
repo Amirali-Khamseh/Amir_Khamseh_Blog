@@ -13,7 +13,7 @@ import { Links } from "./links";
 
 function SiteHeader() {
   return (
-    <header className="sticky  top-0 z-50 w-full border-b bg-background">
+    <header className="sticky  top-0 z-50 w-screen border-b bg-background">
       <div className="flex h-16 items-center px-6  sm:justify-between gap-5">
         {/* Mobile Menu */}
         <Sheet>
