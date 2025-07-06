@@ -8,16 +8,16 @@ export const metadata = {
 
 In JavaScript, when multiple asynchronous operations modify or rely on shared data, the result can become unpredictable. This is known as a **race condition**. It happens when the outcome depends on which asynchronous operation finishes first.
 
-One common scenario where this can occur is **search functionality**—especially when each keystroke triggers a new network request without debouncing. Let's dive deeper with an example.
+One common scenario where this can occur is **search functionality**, especially when each keystroke triggers a new network request without debouncing. Let's dive deeper with an example.
 
 ## A Real-World Example: Search Requests
 
 Imagine you have a search bar where the user types quickly:
 
 - First, the user types `"book"`, which sends a network request.
-- Immediately after, they type `"books"`—another request is fired.
+- Immediately after, they type `"books"`, another request is fired.
 
-Now, depending on your backend logic, the response for `"books"` might arrive **before** `"book"`, even though the request for `"book"` was sent earlier. This causes your UI to show results for `"book"` *after* showing results for `"books"`—a confusing and unintended behavior.
+Now, depending on your backend logic, the response for `"books"` might arrive **before** `"book"`, even though the request for `"book"` was sent earlier. This causes your UI to show results for `"book"` *after* showing results for `"books"`, a confusing and unintended behavior.
 
 This is where **AbortController** comes in.
 

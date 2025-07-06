@@ -17,7 +17,7 @@ The code for this example is available here: 👉[GitHub Repo](https://github.co
 ## 1. Searching Through Data **Without Debouncing**
 
 In the first example, **every keystroke** triggers the search filtering immediately.  
-This behavior is **not optimal** because it increases the load on the server (or client) and can hurt the overall performance — especially if the filtering or API logic becomes heavier.
+This behavior is **not optimal** because it increases the load on the server (or client) and can hurt the overall performance, especially if the filtering or API logic becomes heavier.
 
 In this example, we're not using an API call, but a `setTimeout` with 100 fruits in an array to simulate a complex operation:
 
@@ -92,7 +92,7 @@ export default DebouncedInput;
 Let's optimize the search functionality by **adding debouncing**!
 
 
-### Step 1 — Wrap `filterItems` inside a `useCallback`
+### Step 1 - Wrap `filterItems` inside a `useCallback`
 
 First, we memoize the filtering logic using `useCallback`.  
 This ensures that `filterItems` doesn't get recreated unnecessarily on each render:
@@ -109,7 +109,7 @@ const filterItems = useCallback((text: string) => {
   }, 500);
 }, []);
 ```
-### Step 2 — Create a Debounced Version of `filterItems`
+### Step 2 - Create a Debounced Version of `filterItems`
 We create a `debouncedFilter` function, also wrapped inside a `useCallback`.
 It works by:
 
@@ -127,7 +127,7 @@ It works by:
 }, [filterItems]);
 ```
 
-### Step 3 — Update `handleChange` to Use Debouncing
+### Step 3 - Update `handleChange` to Use Debouncing
 Now, instead of calling `filterItems` directly inside the input handler, we call `debouncedFilter`:
 ```tsx
 const handleChange = (event: any) => {
