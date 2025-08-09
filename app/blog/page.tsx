@@ -1,15 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
-import Link from "next/link";
 import type { Metadata } from "next";
 import { Post } from "@/types";
-import Search from "@/components/blog/Search";
+import Filter from "@/components/blog/Filter";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Amir's Blog",
     description:
-      "A blog about web development and cloud computing, with a focus on JavaScript and AWS. Expect hands-on tutorials, best practices, and insights to help you build and scale modern applications.",
+      "A blog about web development and cloud computing, with a focus on JavaScript, TypeScript and AWS. Expect hands-on tutorials, best practices, and insights to help you build and scale modern applications.",
   };
 }
 
@@ -57,23 +56,8 @@ export default async function Home() {
       <div>
         <h2 className="text-5xl sm:text-6xl font-black">Blog</h2>
       </div>
-      <div className="text-lg w-full">
-        <Search posts={posts} />
-      </div>
-
       <div className="w-full">
-        <div className="space-y-4">
-          {posts.map((post) => (
-            <div key={post.slug} className="p-4 border rounded-md shadow">
-              <Link className="flex flex-col" href={`/blog/${post.slug}`}>
-                <div className="text-2xl font-bold hover:underline">
-                  {post.metadata.title}
-                </div>
-                <div>{post.metadata.publishDate}</div>
-              </Link>
-            </div>
-          ))}
-        </div>
+        <Filter posts={posts} />
       </div>
     </div>
   );
