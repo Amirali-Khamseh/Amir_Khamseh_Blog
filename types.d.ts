@@ -7,4 +7,5 @@ export interface PostMetadata {
   title: string;
   publishDate: string;
   [key: string]: any;
+  category: string;
 }
