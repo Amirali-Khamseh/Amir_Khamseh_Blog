@@ -1,0 +1,222 @@
+export const metadata = {
+  title: "Recovering From the .env Disaster",
+  publishDate: "2025-09-01",
+  description: "Recovering .env from git hostory",
+  category: "Git",
+};
+
+# Recovering From the .env Disaster
+
+Accidentally committing a `.env` file with sensitive credentials to a Git repository is a security nightmare. Simply deleting the file and committing again doesn't solve the problem because the file remains in your Git history, accessible to anyone who knows where to look.
+
+This is where `git filter-repo` becomes essential. It allows you to rewrite Git history and completely remove files as if they never existed.
+
+---
+
+## The Problem
+
+When you remove a file using standard Git commands:
+
+```bash
+git rm .env
+git commit -m "Remove .env file"
+git push
+```
+
+The file is still in your commit history. Anyone can navigate through your commits and retrieve it. Even if you delete the entire repository, anyone who cloned or forked it still has access to your secrets.
+
+---
+
+## What Is git filter-repo?
+
+`git filter-repo` is a tool for rewriting Git history. It's significantly faster and safer than the older `git filter-branch` command, with better performance and clearer syntax.
+
+### Installation
+
+```bash
+# macOS
+brew install git-filter-repo
+
+# Ubuntu/Debian
+apt-get install git-filter-repo
+
+# pip
+pip3 install git-filter-repo
+```
+
+---
+
+## The Scenario: Exposed .env File
+
+Let's say you accidentally committed a `.env` file containing:
+
+```
+DATABASE_URL=postgresql://admin:MySecretPass123@prod-db.example.com:5432/maindb
+AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+STRIPE_SECRET_KEY=sk_live_51Hx7example
+```
+
+The file went through several commits before you noticed the mistake. Now you need to remove it completely from history.
+
+---
+
+## The Solution: --invert-paths
+
+The command to remove the file completely:
+
+```bash
+git filter-repo --path .env --invert-paths
+```
+
+Breaking it down:
+
+- `git filter-repo` Invokes the tool
+- `--path .env` Specifies the target file
+- `--invert-paths` Inverts the selection (removes everything matching this path)
+
+---
+
+## Step-by-Step Recovery
+
+### 1. Create a Backup
+
+Always create a backup before rewriting history:
+
+```bash
+cd /path/to/repo
+cd ..
+cp -r repo repo-backup
+cd repo
+```
+
+### 2. Run filter-repo
+
+```bash
+git filter-repo --path .env --invert-paths
+```
+
+Output:
+
+```
+Parsed 127 commits
+New history written in 0.23 seconds
+Completely finished after 0.45 seconds.
+```
+
+### 3. Verify Removal
+
+Check that the file is gone from history:
+
+```bash
+git log --all --full-history -- .env
+```
+
+This should return nothing.
+
+### 4. Force Push
+
+`git filter-repo` removes remotes as a safety measure. Re-add your remote and force push:
+
+```bash
+git remote add origin https://github.com/username/repo.git
+git push origin --force --all
+git push origin --force --tags
+```
+
+---
+
+## Important Considerations
+
+### Security First
+
+Even after removing the file from Git history:
+
+1. **Revoke all exposed credentials immediately** - This is the most critical step
+2. Contact your Git hosting provider (GitHub/GitLab) to clear cached views
+3. Assume all secrets are compromised and rotate them
+4. Remember that anyone who cloned the repo before the fix still has access
+
+### Force Push Implications
+
+Rewriting history affects everyone:
+
+- Team members will have conflicts with their local copies
+- Coordinate with your team before force pushing
+- Best done on repositories you control
+
+### Team Coordination
+
+Team members should either reset or re-clone:
+
+**Option 1: Reset**
+
+```bash
+git fetch origin
+git reset --hard origin/main
+```
+
+**Option 2: Re-clone (recommended)**
+
+```bash
+rm -rf project-directory
+git clone https://github.com/username/repo.git
+```
+
+---
+
+### Removing Multiple File Types
+
+```bash
+git filter-repo --path-glob '*.log' --path-glob '*.tmp' --invert-paths
+```
+
+Output:
+
+```
+Parsed 89 commits
+New history written in 0.21 seconds
+Completely finished after 0.42 seconds.
+```
+
+### Extracting a Subdirectory
+
+```bash
+git filter-repo --path path/to/subdirectory/
+```
+
+This keeps only the specified directory, useful when splitting monorepos.
+
+Output:
+
+```
+Parsed 156 commits
+New history written in 0.31 seconds
+Completely finished after 0.58 seconds.
+```
+
+---
+
+## Performance Comparison
+
+On a repository with 127 commits:
+
+| Tool                | Time          | Speed           |
+| ------------------- | ------------- | --------------- |
+| `git filter-branch` | ~45 seconds   | Baseline        |
+| `git filter-repo`   | ~0.45 seconds | **100x faster** |
+
+---
+
+## Understanding How It Works
+
+`git filter-repo` rewrites your entire commit history. For each commit in your repository:
+
+1. It checks if the commit contains the specified file
+2. If the file exists and `--invert-paths` is used, it removes the file from that commit
+3. It recalculates the commit hash (since the content changed)
+4. It updates all references to maintain repository integrity
+
+This is why force pushing is necessary—you're replacing the old history with a new, cleaned history.
+
+That's all Ciao🙋🏼‍♂️
